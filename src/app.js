@@ -109,6 +109,12 @@ class Recipes extends React.Component {
     this.handleOpenEditModal();
   };
 
+  handleEditRecipeName = (recipeName) => {
+    this.setState({ 
+      recipeToEdit: { ...this.state.recipeToEdit, recipeName}
+    });
+  }
+
   render() {
     console.log(this.state);
     return (
@@ -134,6 +140,7 @@ class Recipes extends React.Component {
           showModal={this.state.showEditModal}
           handleCloseModal={this.handleCloseEditModal}
           recipeToEdit={this.state.recipeToEdit}
+          handleEditRecipeName={this.handleEditRecipeName}
         />
       </div>
     );
@@ -179,20 +186,9 @@ class AddRecipeForm extends React.Component {
 
 class EditRecipeForm extends React.Component {
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      recipeName: this.props.recipeToEdit.recipeName,
-      prepTime: '',
-      ingredients: [],
-      instructions: ''
-    };
-  };
-
   onRecipeNameChange = (e) => {
-    console.log(this.state);
     const recipeName = e.target.value;
-    this.setState(() => ({ recipeName }));
+    this.props.handleEditRecipeName(recipeName);
   };
 
   render() {
@@ -208,7 +204,7 @@ class EditRecipeForm extends React.Component {
             <input 
               type="text" 
               name="recipe"
-              value = {this.state.recipeName}
+              value = {this.props.recipeToEdit.recipeName}
               onChange={this.onRecipeNameChange}
             />
           </label>
