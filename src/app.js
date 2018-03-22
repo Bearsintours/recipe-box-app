@@ -42,6 +42,7 @@ class Recipes extends React.Component {
     this.handleOpenEditModal = this.handleOpenEditModal.bind(this);
     this.handleCloseEditModal = this.handleCloseEditModal.bind(this);
     this.handleEditRecipe = this.handleEditRecipe.bind(this);
+    this.handleUpdateRecipe = this.handleUpdateRecipe.bind(this);
   } 
 
   state = {
@@ -97,22 +98,44 @@ class Recipes extends React.Component {
     }));
   };
 
-  handleEditRecipe = (recipeToUpdate) => {
+  handleEditRecipe = (recipeToEdit) => {
+    console.log('recipe to update', recipeToEdit);
     this.setState(() => ({
       recipeToEdit: {
-        recipeName: recipeToUpdate.recipeName, 
-        prepTime: recipeToUpdate.prepTime, 
-        ingredients: recipeToUpdate.ingredients, 
-        instructions: recipeToUpdate.instructions
+        recipeName: recipeToEdit.recipeName, 
+        prepTime: recipeToEdit.prepTime,
+        ingredients: recipeToEdit.ingredients,
+        instructions: recipeToEdit.instructions
       }
     }));
     this.handleOpenEditModal();
   };
 
-  handleEditRecipeName = (recipeName) => {
-    this.setState({ 
-      recipeToEdit: { ...this.state.recipeToEdit, recipeName}
+  handleEditPrepTime = (prepTime) => {
+    this.setState({
+      recipeToEdit: { ...this.state.recipeToEdit, prepTime }
     });
+  }
+
+  handleEditIngredients= (ingredients) => {
+    this.setState({
+      recipeToEdit: { ...this.state.recipeToEdit, ingredients }
+    });
+  }
+
+  handleEditInstructions = (instructions) => {
+    this.setState({
+      recipeToEdit: { ...this.state.recipeToEdit, instructions }
+    });
+  }
+
+  handleUpdateRecipe = () => {
+    const updatedRecipe = this.state.recipeToEdit;
+    const recipes = [...this.state.recipes];
+    const index = recipes.findIndex((recipe) => recipe.recipeName === updatedRecipe.recipeName);
+    recipes[index] = updatedRecipe;
+    this.setState({ recipes });
+
   }
 
   render() {
@@ -140,7 +163,10 @@ class Recipes extends React.Component {
           showModal={this.state.showEditModal}
           handleCloseModal={this.handleCloseEditModal}
           recipeToEdit={this.state.recipeToEdit}
-          handleEditRecipeName={this.handleEditRecipeName}
+          handleEditPrepTime={this.handleEditPrepTime}
+          handleEditIngredients={this.handleEditIngredients}
+          handleEditInstructions={this.handleEditInstructions}
+          handleUpdateRecipe={this.handleUpdateRecipe}
         />
       </div>
     );
@@ -152,11 +178,16 @@ class AddRecipeForm extends React.Component {
 
   addRecipe = (e) => {
     e.preventDefault();
-    let recipeName = e.target.elements.recipe.value.trim();
-    let prepTime = e.target.elements.prepTime.value.trim();
-    let ingredients = e.target.elements.ingredients.value.trim();
-    let instructions = e.target.elements.instructions.value.trim();
-    let recipe = {recipeName, prepTime, ingredients, instructions}
+    const recipeName = e.target.elements.recipe.value.trim();
+    const prepTime = e.target.elements.prepTime.value.trim();
+    const ingredients = e.target.elements.ingredients.value.trim();
+    const instructions = e.target.elements.instructions.value.trim();
+    const recipe = {
+      recipeName,
+      prepTime,
+      ingredients,
+      instructions
+    }
     console.log(recipe);
     this.props.handleAddRecipe(recipe);
     this.props.handleCloseModal();
@@ -186,10 +217,28 @@ class AddRecipeForm extends React.Component {
 
 class EditRecipeForm extends React.Component {
 
-  onRecipeNameChange = (e) => {
-    const recipeName = e.target.value;
-    this.props.handleEditRecipeName(recipeName);
+  onPrepTimeChange = (e) => {
+    const prepTime = e.target.value;
+    this.props.handleEditPrepTime(prepTime);
   };
+
+  onIngredientsChange = (e) => {
+    const ingredients = e.target.value;
+    this.props.handleEditIngredients(ingredients);
+  };
+
+  onInstructionsChange = (e) => {
+    const instructions = e.target.value;
+    this.props.handleEditInstructions(instructions);
+  };
+
+  updateRecipe = (e) => {
+    e.preventDefault();
+    const updatedRecipe = this.props.recipeToEdit;
+    this.props.handleCloseModal();
+    this.props.handleUpdateRecipe(updatedRecipe);
+    
+  }
 
   render() {
     return (
@@ -198,21 +247,35 @@ class EditRecipeForm extends React.Component {
         isOpen = {this.props.showModal}
         contentLabel = "Edit recipe"
         >
-        <form onSubmit={this.handleEditRecipe}>
+        <h1>{this.props.recipeToEdit.recipeName}</h1>
+        <form onSubmit={this.updateRecipe}>
           <label>
-            Recipe
+            Prep Time
             <input 
               type="text" 
-              name="recipe"
-              value = {this.props.recipeToEdit.recipeName}
-              onChange={this.onRecipeNameChange}
+              name="prepTime" 
+              value={this.props.recipeToEdit.prepTime}
+              onChange={this.onPrepTimeChange}
             />
           </label>
-          <label>Prep Time<input type="text" name="prepTime" /></label>
-          <label>Ingredients<input type="text" name="ingredients" /></label>
-          <textarea type="text" name="instructions"></textarea>
+          <label>
+            Ingredients
+            <input 
+              type="text" 
+              name="ingredients" 
+              value={this.props.recipeToEdit.ingredients}
+              onChange={this.onIngredientsChange}
+            />
+          </label>
+          <textarea 
+            type="text" 
+            name="instructions"
+            value={this.props.recipeToEdit.instructions}
+            onChange={this.onInstructionsChange}
+          >
+          </textarea>
           <div>
-            <button>Submit</button>
+            <button>Update</button>
           </div>
         </form>
         <button onClick={this.props.handleCloseModal}>Cancel</button>
