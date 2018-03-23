@@ -1,5 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+//import Bootstrap from 'bootstrap/dist/css/bootstrap.css';
+import { Button, Panel, PanelGroup, Accordion } from 'react-bootstrap';
 import 'normalize.css/normalize.css';
 import ReactModal from 'react-modal';
 import './styles/styles.scss';
@@ -142,18 +144,36 @@ class Recipes extends React.Component {
     console.log(this.state);
     return (
       <div>
-        <button onClick={this.handleOpenAddModal}>+</button> 
-        {
-          this.state.recipes.map((recipe) => {
-            return (
-              <div key={recipe.recipeName}>
-              <p>{recipe.recipeName}</p>
-                <button onClick={(e) => {this.handleDeleteRecipe(recipe)}}>Delete</button>
-              <button onClick={(e) => {this.handleEditRecipe(recipe)}}>Edit</button>
-              </div>
-            )
-          })
-        }
+        <div><button onClick={this.handleOpenAddModal}>+</button></div>
+        <div className="App container">
+          <PanelGroup accordion id="accordion-recipe">
+          {
+            this.state.recipes.map((recipe) => {
+              return (          
+                  <Panel eventKey={recipe.recipeName} key={recipe.recipeName}>
+                    <Panel.Heading>
+                      <Panel.Title toggle>{recipe.recipeName}</Panel.Title>            
+                    </Panel.Heading>
+                    <Panel.Body collapsible>
+                      <ul>
+                        <p>Ingredients: </p>
+                        {recipe.ingredients.join().split(",").map((ingredient) => (
+                          <li key={ingredient}>{ingredient}</li>
+                          ))                     
+                        }
+                      </ul>
+                      <div>{`Preparation:  ${recipe.prepTime} min`}</div>
+                      <div>{`Instructions:  ${recipe.instructions}`}</div>
+                      <button onClick={(e) => { this.handleDeleteRecipe(recipe) }}>Delete</button>
+                      <button onClick={(e) => { this.handleEditRecipe(recipe) }}>Edit</button>
+                    </Panel.Body>
+                  </Panel>
+           
+              )
+            })
+          }
+          </PanelGroup> 
+        </div>
         <AddRecipeForm
           showModal={this.state.showAddModal}
           handleCloseModal={this.handleCloseAddModal}
@@ -205,10 +225,10 @@ class AddRecipeForm extends React.Component {
           <label>Ingredients<input type="text" name="ingredients" /></label>
           <textarea type="text" name="instructions" placeholder="Instructions" />
           <div>
-            <button>Add Recipe</button>
+            <Button bsStyle="success">Add Recipe</Button>
           </div>
         </form>
-        <button onClick={this.props.handleCloseModal}>Cancel</button>
+        <Button bsStyle="danger" onClick={this.props.handleCloseModal}>Cancel</Button>
       </ReactModal>
     );
   };
@@ -275,10 +295,10 @@ class EditRecipeForm extends React.Component {
           >
           </textarea>
           <div>
-            <button>Update</button>
+            <Button bsStyle="success">Update</Button>
           </div>
         </form>
-        <button onClick={this.props.handleCloseModal}>Cancel</button>
+          <Button bsStyle="danger" onClick={this.props.handleCloseModal}>Cancel</Button>
         </ReactModal>
       </div>
     );
