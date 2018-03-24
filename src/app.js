@@ -27,7 +27,7 @@ class Header extends React.Component {
   render () {
     return (
       <div>
-       <h1>Recipe Box</h1>
+       <h1 className="text-center">Recipe Box</h1>
       </div>
     );
   };
@@ -144,28 +144,31 @@ class Recipes extends React.Component {
     console.log(this.state);
     return (
       <div>
-        <div><button onClick={this.handleOpenAddModal}>+</button></div>
+        <div>
+          <Button bsStyle="warning" onClick={this.handleOpenAddModal}>Add a new recipe</Button>
+        </div>
         <div className="App container">
           <PanelGroup accordion id="accordion-recipe">
           {
             this.state.recipes.map((recipe) => {
               return (          
-                  <Panel eventKey={recipe.recipeName} key={recipe.recipeName}>
+                <Panel bsStyle="info" eventKey={recipe.recipeName} key={recipe.recipeName}>
                     <Panel.Heading>
-                      <Panel.Title toggle>{recipe.recipeName}</Panel.Title>            
+                    <Panel.Title className="text-center" toggle>{recipe.recipeName}</Panel.Title>            
                     </Panel.Heading>
                     <Panel.Body collapsible>
                       <ul>
                         <p>Ingredients: </p>
-                        {recipe.ingredients.join().split(",").map((ingredient) => (
-                          <li key={ingredient}>{ingredient}</li>
-                          ))                     
+                        {
+                          recipe.ingredients.map((ingredient) => (
+                            <li key={ingredient}>{ingredient}</li>
+                          ))
                         }
                       </ul>
                       <div>{`Preparation:  ${recipe.prepTime} min`}</div>
                       <div>{`Instructions:  ${recipe.instructions}`}</div>
-                      <button onClick={(e) => { this.handleDeleteRecipe(recipe) }}>Delete</button>
-                      <button onClick={(e) => { this.handleEditRecipe(recipe) }}>Edit</button>
+                      <Button bsStyle="danger" onClick={(e) => { this.handleDeleteRecipe(recipe) }}>Delete</Button>
+                      <Button bsStyle="warning" onClick={(e) => { this.handleEditRecipe(recipe) }}>Edit</Button>
                     </Panel.Body>
                   </Panel>
            
@@ -200,7 +203,7 @@ class AddRecipeForm extends React.Component {
     e.preventDefault();
     const recipeName = e.target.elements.recipe.value.trim();
     const prepTime = e.target.elements.prepTime.value.trim();
-    const ingredients = e.target.elements.ingredients.value.trim();
+    const ingredients = e.target.elements.ingredients.value.split(",");
     const instructions = e.target.elements.instructions.value.trim();
     const recipe = {
       recipeName,
@@ -225,7 +228,7 @@ class AddRecipeForm extends React.Component {
           <label>Ingredients<input type="text" name="ingredients" /></label>
           <textarea type="text" name="instructions" placeholder="Instructions" />
           <div>
-            <Button bsStyle="success">Add Recipe</Button>
+            <Button bsStyle="success" type="submit">Add Recipe</Button>
           </div>
         </form>
         <Button bsStyle="danger" onClick={this.props.handleCloseModal}>Cancel</Button>
@@ -243,7 +246,8 @@ class EditRecipeForm extends React.Component {
   };
 
   onIngredientsChange = (e) => {
-    const ingredients = e.target.value;
+    const ingredients = e.target.value.split(",");
+    console.log(ingredients);
     this.props.handleEditIngredients(ingredients);
   };
 
@@ -295,7 +299,7 @@ class EditRecipeForm extends React.Component {
           >
           </textarea>
           <div>
-            <Button bsStyle="success">Update</Button>
+              <Button bsStyle="success" type="submit">Update</Button>
           </div>
         </form>
           <Button bsStyle="danger" onClick={this.props.handleCloseModal}>Cancel</Button>
