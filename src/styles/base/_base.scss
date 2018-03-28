@@ -5,6 +5,51 @@ html {
 body {
   font-family: Helvetica, Arial, sans-serif;
   font-size: $m-size;
+  background: linear-gradient( rgba(49, 27, 146, 0.4), rgba(49, 27, 146, 0.4)),
+              url(https://images.unsplash.com/photo-1470549813517-2fa741d25c92?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=8d1aec0b445e44cfbca1e0741f008709&auto=format&fit=crop&w=1350&q=80);
+  margin-top: 150px;
+  text-align: center;
 }
+
+.app {
+  background-color: rgba(225, 245, 254, 0.8);
+  margin: auto;
+  width: 60%;
+  padding: 1rem;
+}
+
+.header {
+  font-size: $xl-size;
+}
+
+.btn {
+  text-transform: uppercase;
+  margin: 1rem;
+}
+
+.panel {
+  background-color: rgba(225, 245, 254, 0.8);
+  margin: auto;
+  width: 60%;
+}
+
+.Modal {
+  background-color: papayawhip;
+  margin: auto;
+  padding: 5rem 10rem;
+  position: relative;
+  top: 50px;
+  width: 60%;
+  h1 {
+    margin-bottom: 5rem;
+    margin-top: -3rem;
+  }
+  .form-group {
+    margin: 2rem;
+  }
+}
+
+
+
 
 

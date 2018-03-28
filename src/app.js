@@ -1,7 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-//import Bootstrap from 'bootstrap/dist/css/bootstrap.css';
-import { Button, Panel, PanelGroup, FormGroup, FormControl, ControlLabel, Accordion, Badge, Glyphicon } from 'react-bootstrap';
+import { Button, Panel, PanelGroup, Form, FormGroup, InputGroup, FormControl, ControlLabel, Accordion, Badge, Glyphicon } from 'react-bootstrap';
 import 'normalize.css/normalize.css';
 import ReactModal from 'react-modal';
 import './styles/styles.scss';
@@ -14,7 +13,7 @@ class App extends React.Component {
 
   render () {
     return (
-      <div>
+      <div className="app">
         <Header />  
         <Recipes />
       </div>
@@ -27,7 +26,7 @@ class Header extends React.Component {
   render () {
     return (
       <div>
-       <h1 className="text-center">Recipe Box</h1>
+       <h1 className="text-center header">Recipe Box</h1>
       </div>
     );
   };
@@ -143,11 +142,8 @@ class Recipes extends React.Component {
   render() {
     console.log(this.state);
     return (
-      <div>
+      <div className="recipes">       
         <div>
-          <Button className="btn" bsStyle="warning" onClick={this.handleOpenAddModal}><Glyphicon glyph="plus"/> Add a new recipe</Button>
-        </div>
-        <div className="App container">
           <PanelGroup accordion id="accordion-recipe">
           {
             this.state.recipes.map((recipe) => {
@@ -165,15 +161,17 @@ class Recipes extends React.Component {
                       }                     
                       <div>{`Preparation:  ${recipe.prepTime} min`}</div>
                       <div>{`Instructions:  ${recipe.instructions}`}</div>
-                    <Button bsStyle="danger" onClick={(e) => { this.handleDeleteRecipe(recipe) }}><Glyphicon glyph="trash"/> Delete</Button>
-                    <Button bsStyle="warning" onClick={(e) => { this.handleEditRecipe(recipe) }}><Glyphicon glyph="pencil" /> Edit</Button>
+                    <Button bsSize="small" bsStyle="danger" onClick={(e) => { this.handleDeleteRecipe(recipe) }}><Glyphicon glyph="trash"/> Delete</Button>
+                    <Button bsSize="small" bsStyle="warning" onClick={(e) => { this.handleEditRecipe(recipe) }}><Glyphicon glyph="pencil" /> Edit</Button>
                     </Panel.Body>
                   </Panel>
-           
               )
             })
           }
           </PanelGroup> 
+        </div>
+        <div>
+          <Button className="addBtn" bsStyle="warning" bsSize="large" onClick={this.handleOpenAddModal}><Glyphicon glyph="plus"/> new recipe</Button>
         </div>
         <AddRecipeForm
           showModal={this.state.showAddModal}
@@ -219,45 +217,46 @@ class AddRecipeForm extends React.Component {
       <ReactModal
         isOpen={this.props.showModal}
         contentLabel="Add recipe"
+        className="Modal"
       > 
-        <form onSubmit={this.addRecipe}>
-          <FormGroup
-            controlId="recipeName"
-          >
-            <ControlLabel>Recipe</ControlLabel>
-            <FormControl
-              inputRef={(input) => this.recipeName = input}
-              type="text"
-              name="recipeName"
-              placeholder="Enter recipe name"
-            />
+        <Form onSubmit={this.addRecipe}>
+          <FormGroup controlId="recipeName">  
+            <InputGroup>
+              <InputGroup.Addon>Recipe</InputGroup.Addon>
+              <FormControl 
+                inputRef = {(input) => this.recipeName = input}
+                type = "text"
+                name = "recipeName"
+                placeholder = "Enter recipe name" 
+              />       
+            </InputGroup>
           </FormGroup>
-          <FormGroup
-            controlId="ingredients"
-          >
-            <ControlLabel>Ingredients</ControlLabel>
-            <FormControl
-              inputRef={(input) => this.ingredients = input}
-              type="text"
-              name="ingredients"
-              placeholder="Enter ingredients (comma separated)"
-            />
+          <FormGroup controlId="ingredients">
+            <InputGroup>
+              <InputGroup.Addon>Ingredients</InputGroup.Addon>
+              <FormControl
+                inputRef={(input) => this.ingredients = input}
+                type="text"
+                name="ingredients"
+                placeholder="Enter ingredients (comma separated)"
+              />
+            </InputGroup>
           </FormGroup>
-          <FormGroup
-            controlId="prepTime"
-          >
-            <ControlLabel>Preparation Time</ControlLabel>
-            <FormControl
-              inputRef={(input) => this.prepTime = input}
-              type="text"
-              name="prepTime"
-              placeholder="Enter time in min"
-            />
+          <FormGroup controlId="prepTime">
+            <InputGroup>
+              <InputGroup.Addon>Preparation</InputGroup.Addon>
+              <FormControl
+                inputRef={(input) => this.prepTime = input}
+                type="text"
+                name="prepTime"
+                placeholder="Enter time in min"
+              />
+            </InputGroup>
           </FormGroup>
           <FormGroup
             controlId="instructions"
           >
-            <ControlLabel>Instructions</ControlLabel>
+            <ControlLabel>Instructions</ControlLabel>{' '}
             <FormControl
               inputRef={(input) => this.instructions = input}
               componentClass="textarea"
@@ -269,7 +268,7 @@ class AddRecipeForm extends React.Component {
             <Button bsStyle="success" onClick={this.addRecipe}><Glyphicon glyph="ok" /> Save</Button>
             <Button bsStyle="danger" onClick={this.props.handleCloseModal}><Glyphicon glyph="remove" /> Cancel</Button>
           </div>
-        </form>
+        </Form>
         
       </ReactModal>
     );
@@ -309,32 +308,31 @@ class EditRecipeForm extends React.Component {
         <ReactModal
           isOpen = {this.props.showModal}
           contentLabel = "Edit recipe"
+          className="Modal"
         >
           <h1>{this.props.recipeToEdit.recipeName}</h1>
           <form onSubmit={this.updateRecipe}>
-            <FormGroup
-              controlId="prepTime"
-            >
-              <ControlLabel>Recipe</ControlLabel>
-              <FormControl
-                type="text"
-                value={this.props.recipeToEdit.prepTime}
-                onChange={this.onPrepTimeChange}
-              />
+            <FormGroup controlId="prepTime">
+              <InputGroup>
+                <InputGroup.Addon>Preparation</InputGroup.Addon>
+                <FormControl
+                  type="text"
+                  value={this.props.recipeToEdit.prepTime}
+                  onChange={this.onPrepTimeChange}
+                />
+              </InputGroup>
             </FormGroup>
-            <FormGroup
-              controlId="ingredients"
-            >
-              <ControlLabel>Ingredients</ControlLabel>
-              <FormControl
-                type="text"
-                value={this.props.recipeToEdit.ingredients}
-                onChange={this.onIngredientsChange}
-              />
+            <FormGroup controlId="ingredients">
+              <InputGroup>
+                <InputGroup.Addon>Ingredients</InputGroup.Addon>
+                <FormControl
+                  type="text"
+                  value={this.props.recipeToEdit.ingredients}
+                  onChange={this.onIngredientsChange}
+                />
+              </InputGroup>
             </FormGroup>
-            <FormGroup
-              controlId="instructions"
-            >
+            <FormGroup controlId="instructions">
               <ControlLabel>Instructions</ControlLabel>
               <FormControl
                 componentClass="textarea"
