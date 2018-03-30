@@ -58,10 +58,10 @@ class Recipes extends React.Component {
         instructions: 'Melt the butter over low heat in a small saucepan and add the flour all at once, stirring with a wooden spoon for 2 minutes. Slowly pour the hot milk into the butter?flour mixture and cook, whisking constantly, until the sauce is thickened. Off the heat add the salt, pepper, nutmeg, 1/2 cup grated Gruyere, and the Parmesan and set aside.'
       },
       {
-        recipeName: 'Curry',
+        recipeName: 'Nopales Salad',
         ingredients: ['rice', 'ginger', 'garlic'],
-        prepTime: '55',
-        instructions: 'stuffs'
+        prepTime: '25',
+        instructions: 'Cooking the Cactus Cut the cactus pads into 1 / 4 " x 1/2" pieces. Place the cactus in a large pan and cover with 2 " of water. Turn the heat on high and bring the water to a boil. Reduce the heat to medium.Skim the slime during cooking until the cactus no longer releases any.(about 10 minutes) Drain the cactus and rinse under cool running water. Dice the tomatoes. Dice the onion. Finely chop the cilantro. Crumble the ranchero cheese. Assembling the Salad Add all of the ingredients to a mixing bowl and gently turn until well mixed.'
       }
     ],
     recipeToEdit: {
@@ -85,10 +85,8 @@ class Recipes extends React.Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if (prevState.recipes.length !== this.state.recipes.length) {
-      const json = JSON.stringify(this.state.recipes);
-      localStorage.setItem('recipes', json);
-    }
+    const json = JSON.stringify(this.state.recipes);
+    localStorage.setItem('recipes', json);   
   }
 
   handleOpenAddModal() {
@@ -332,9 +330,8 @@ class EditRecipeForm extends React.Component {
 
   updateRecipe = (e) => {
     e.preventDefault();
-    const updatedRecipe = this.props.recipeToEdit;
     this.props.handleCloseModal();
-    this.props.handleUpdateRecipe(updatedRecipe);   
+    this.props.handleUpdateRecipe();   
   }
 
   render() {
