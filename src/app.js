@@ -51,9 +51,11 @@ class Recipes extends React.Component {
     recipes: [
       {
         recipeName: 'Croque-Monsieur',
-        ingredients: ['bread', 'butter', 'ham'],
-        prepTime: '15',
-        instructions: 'blablabla'
+        ingredients: [
+          '5 tbs butter', '1 tbs flour', '2/3 cup milk', 'sea salt', '4 slices country bread', 
+          'grated nutmeg', '4 slices french ham', '2 slices gruyere cheese'],
+        prepTime: 20,
+        instructions: 'Melt the butter over low heat in a small saucepan and add the flour all at once, stirring with a wooden spoon for 2 minutes. Slowly pour the hot milk into the butter?flour mixture and cook, whisking constantly, until the sauce is thickened. Off the heat add the salt, pepper, nutmeg, 1/2 cup grated Gruyere, and the Parmesan and set aside.'
       },
       {
         recipeName: 'Curry',
@@ -70,36 +72,54 @@ class Recipes extends React.Component {
     }
   }
 
+  componentDidMount() {
+    try {
+      const json = localStorage.getItem('recipes');
+      const recipes = JSON.parse(json);
+      if (recipes) {
+      this.setState(() => ({ recipes }));
+      }
+    } catch(e) {
+      // In case invalid value is parsed, do nothing
+    } 
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.recipes.length !== this.state.recipes.length) {
+      const json = JSON.stringify(this.state.recipes);
+      localStorage.setItem('recipes', json);
+    }
+  }
+
   handleOpenAddModal() {
     this.setState({ showAddModal: true });
-  };
+  }
 
   handleCloseAddModal() {
     this.setState({ showAddModal: false });
-  };
+  }
 
   handleOpenEditModal() {
     this.setState({ showEditModal: true });
-  };
+  }
 
   handleCloseEditModal() {
     this.setState({ showEditModal: false });
-  };
+  }
 
   handleAddRecipe(recipe) {
     return this.setState((prevState) => ({
       recipes: prevState.recipes.concat(recipe)
     }));
-  };
+  }
 
   handleDeleteRecipe = (recipeToDelete) => {
     return this.setState((prevState) => ({
       recipes: prevState.recipes.filter((recipe) => recipe.recipeName !== recipeToDelete.recipeName)
     }));
-  };
+  }
 
   handleEditRecipe = (recipeToEdit) => {
-    console.log('recipe to update', recipeToEdit);
     this.setState(() => ({
       recipeToEdit: {
         recipeName: recipeToEdit.recipeName, 
@@ -109,7 +129,7 @@ class Recipes extends React.Component {
       }
     }));
     this.handleOpenEditModal();
-  };
+  }
 
   handleEditPrepTime = (prepTime) => {
     this.setState({
@@ -135,11 +155,9 @@ class Recipes extends React.Component {
     const index = recipes.findIndex((recipe) => recipe.recipeName === updatedRecipe.recipeName);
     recipes[index] = updatedRecipe;
     this.setState({ recipes });
-
   }
 
   render() {
-    console.log(this.state);
     return (
       <div className="recipes">       
         <div>
@@ -152,15 +170,14 @@ class Recipes extends React.Component {
                     <Panel.Title className="text-center" toggle>{recipe.recipeName}</Panel.Title>            
                     </Panel.Heading>
                     <Panel.Body collapsible>
-                     <p> Ingredients:  
-                      {
-                        recipe.ingredients.map((ingredient) => (
+                     <p className="category"> Ingredients: </p>
+                      <p>{
+                        recipe.ingredients.length !== 0 && recipe.ingredients.map((ingredient) => (
                           <Badge bsClass="badge "key={ingredient}> {ingredient}</Badge>
                         ))
-                      } 
-                      </p>                    
-                      <p>{`Preparation:  ${recipe.prepTime} min`}</p>
-                      <p>{`Instructions:  ${recipe.instructions}`}</p>
+                      }</p>                    
+                      {recipe.prepTime !== "" && <p className="category">{`Preparation:  ${recipe.prepTime} min`}</p>}
+                      <p className="category">{`Instructions: ${recipe.instructions}`}</p>
                     <Button bsSize="small" bsStyle="warning" onClick={(e) => { this.handleEditRecipe(recipe) }}><Glyphicon glyph="pencil" /> Edit</Button>
                     <Button id="deleteBtn" bsSize="small" bsStyle="danger" onClick={(e) => { this.handleDeleteRecipe(recipe) }}><Glyphicon glyph="trash"/> Delete</Button>
                     </Panel.Body>
@@ -206,13 +223,13 @@ class AddRecipeForm extends React.Component {
     this.setState({ 
       submitBtnDisabled: this.recipeName.value.length === 0 ? true : false
     });
-  };
+  }
 
   addRecipe = (e) => {
     e.preventDefault();
     const recipeName = this.recipeName.value.trim();
     const prepTime = this.prepTime.value.trim();
-    const ingredients = this.ingredients.value.split(",");
+    const ingredients = this.ingredients.value.length > 0 ? this.ingredients.value.split(",") : [];
     const instructions = this.instructions.value;
     const recipe = {
       recipeName,
@@ -220,10 +237,9 @@ class AddRecipeForm extends React.Component {
       ingredients,
       instructions
     }
-    console.log(recipe);
     this.props.handleAddRecipe(recipe);
     this.props.handleCloseModal();
-  };
+  }
   
   render () {
     return (
@@ -301,25 +317,24 @@ class EditRecipeForm extends React.Component {
   onPrepTimeChange = (e) => {
     const prepTime = e.target.value;
     this.props.handleEditPrepTime(prepTime);
-  };
+  }
 
   onIngredientsChange = (e) => {
     const ingredients = e.target.value.split(",");
     console.log(ingredients);
     this.props.handleEditIngredients(ingredients);
-  };
+  }
 
   onInstructionsChange = (e) => {
     const instructions = e.target.value;
     this.props.handleEditInstructions(instructions);
-  };
+  }
 
   updateRecipe = (e) => {
     e.preventDefault();
     const updatedRecipe = this.props.recipeToEdit;
     this.props.handleCloseModal();
-    this.props.handleUpdateRecipe(updatedRecipe);
-    
+    this.props.handleUpdateRecipe(updatedRecipe);   
   }
 
   render() {
