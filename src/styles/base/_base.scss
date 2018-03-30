@@ -32,16 +32,17 @@ body {
 .panel {
   background-color: #fcf8e3;
   margin: auto;
-  width: 60%;
+  width: 75%;
   text-align: left;
 }
 
 .panel-title {
-  font-size: 18px;
+  font-size: 2rem;
 }
 
 .category {
-  padding-top: 5px;
+  color: #8a6d3b;
+  padding-top: 10px; 
 }
 
 #deleteBtn {
@@ -49,16 +50,23 @@ body {
 }
 
 .badge {
-  margin-left: 5px;
+  border: 3px solid #f0ad4e;
+  background-color: transparent;
+  color: black;
+  margin: 3px;
   font-weight: 100;
+  font-size: 1.5rem;
   padding: 4px;
+}
+
+.instructions {
+  font-weight: 100;
 }
 
 .modal {
   background-color: transparent;
   margin: auto;
   padding: 5rem 10rem;
-  //width: 60%;
   h1 {
     margin-bottom: 5rem;
     margin-top: -3rem;

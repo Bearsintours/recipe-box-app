@@ -55,13 +55,13 @@ class Recipes extends React.Component {
           '5 tbs butter', '1 tbs flour', '2/3 cup milk', 'sea salt', '4 slices country bread', 
           'grated nutmeg', '4 slices french ham', '2 slices gruyere cheese'],
         prepTime: 20,
-        instructions: 'Melt the butter over low heat in a small saucepan and add the flour all at once, stirring with a wooden spoon for 2 minutes. Slowly pour the hot milk into the butter?flour mixture and cook, whisking constantly, until the sauce is thickened. Off the heat add the salt, pepper, nutmeg, 1/2 cup grated Gruyere, and the Parmesan and set aside.'
+        instructions: 'Melt the butter over low heat in a small saucepan and add the flour all at once, stirring with a wooden spoon for 2 minutes. Slowly pour the hot milk into the butter?flour mixture and cook, whisking constantly, until the sauce is thickened. Off the heat add the salt, pepper, nutmeg, 1/2 cup grated Gruyere, and the Parmesan and set aside'
       },
       {
         recipeName: 'Nopales Salad',
-        ingredients: ['rice', 'ginger', 'garlic'],
-        prepTime: '25',
-        instructions: 'Cooking the Cactus Cut the cactus pads into 1 / 4 " x 1/2" pieces. Place the cactus in a large pan and cover with 2 " of water. Turn the heat on high and bring the water to a boil. Reduce the heat to medium.Skim the slime during cooking until the cactus no longer releases any.(about 10 minutes) Drain the cactus and rinse under cool running water. Dice the tomatoes. Dice the onion. Finely chop the cilantro. Crumble the ranchero cheese. Assembling the Salad Add all of the ingredients to a mixing bowl and gently turn until well mixed.'
+        ingredients: ['2 pounds cactus pads', '4 Roma tomatoes', '1 large white onion', '12 sprigs of cilantro', '6 ounces ranchero cheese1', '2 tsp.salt'],
+        prepTime: 25,
+        instructions: 'Cooking the Cactus Cut the cactus pads into 1 / 4 " x 1/2" pieces. Place the cactus in a large pan and cover with 2 " of water. Turn the heat on high and bring the water to a boil. Reduce the heat to medium.Skim the slime during cooking until the cactus no longer releases any. Drain the cactus and rinse under cool running water. Dice the tomatoes. Dice the onion. Finely chop the cilantro. Crumble the ranchero cheese. Assembling the Salad Add all of the ingredients to a mixing bowl and gently turn until well mixed'
       }
     ],
     recipeToEdit: {
@@ -168,14 +168,21 @@ class Recipes extends React.Component {
                     <Panel.Title className="text-center" toggle>{recipe.recipeName}</Panel.Title>            
                     </Panel.Heading>
                     <Panel.Body collapsible>
-                     <p className="category"> Ingredients: </p>
-                      <p>{
+                     <h4 className="category"> Ingredients: </h4>
+                      <p>
+                        {
                         recipe.ingredients.length !== 0 && recipe.ingredients.map((ingredient) => (
-                          <Badge bsClass="badge "key={ingredient}> {ingredient}</Badge>
+                          <Badge key={ingredient}> {ingredient}</Badge>
                         ))
-                      }</p>                    
-                      {recipe.prepTime !== "" && <p className="category">{`Preparation:  ${recipe.prepTime} min`}</p>}
-                      <p className="category">{`Instructions: ${recipe.instructions}`}</p>
+                        }
+                      </p>                    
+                      {recipe.prepTime !== "" && <h4 className="category">{`Preparation:  ${recipe.prepTime} min`}</h4>}
+                      <h4 className="category"> Instructions: </h4>
+                      {
+                        recipe.instructions.length !== 0 && recipe.instructions.split(".").map((instruction, idx) => (
+                          <p className="instructions" key={idx+1}>{`${idx + 1}- ${instruction}`}</p>
+                        ))
+                      }
                     <Button bsSize="small" bsStyle="warning" onClick={(e) => { this.handleEditRecipe(recipe) }}><Glyphicon glyph="pencil" /> Edit</Button>
                     <Button id="deleteBtn" bsSize="small" bsStyle="danger" onClick={(e) => { this.handleDeleteRecipe(recipe) }}><Glyphicon glyph="trash"/> Delete</Button>
                     </Panel.Body>
@@ -296,6 +303,7 @@ class AddRecipeForm extends React.Component {
                 componentClass="textarea"
                 type="text"
                 name="instructions"
+                placeholder = "Separate steps with a dot '.'"
               />
             </FormGroup>
             <div>
