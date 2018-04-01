@@ -249,69 +249,61 @@ class AddRecipeForm extends React.Component {
   render () {
     return (
       <Modal
-        show={this.props.showModal}
-        className="modal"
+        show={this.props.showModal} 
       > 
-        <Modal.Header>
-          <Modal.Title>Add your recipe</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <Form onSubmit={this.addRecipe}>
-            <FormGroup controlId="recipeName">  
-              <InputGroup>
-                <InputGroup.Addon>Recipe</InputGroup.Addon>
-                <FormControl 
-                  inputRef = {(input) => this.recipeName = input}
-                  type = "text"
-                  name = "recipeName"
-                  placeholder = "Enter recipe name" 
-                  autoFocus
-                  onChange={this.handleSubmitBtn}
-
-
-                />       
-              </InputGroup>
-            </FormGroup>
-            <FormGroup controlId="ingredients">
-              <InputGroup>
-                <InputGroup.Addon>Ingredients</InputGroup.Addon>
-                <FormControl
-                  inputRef={(input) => this.ingredients = input}
-                  type="text"
-                  name="ingredients"
-                  placeholder="Enter ingredients (comma separated)"
-                />
-              </InputGroup>
-            </FormGroup>
-            <FormGroup controlId="prepTime">
-              <InputGroup>
-                <InputGroup.Addon>Preparation</InputGroup.Addon>
-                <FormControl
-                  inputRef={(input) => this.prepTime = input}
-                  type="text"
-                  name="prepTime"
-                  placeholder="Enter time in min"
-                />
-              </InputGroup>
-            </FormGroup>
-            <FormGroup
-              controlId="instructions"
-            >
-              <ControlLabel>Instructions</ControlLabel>{' '}
+        <Form onSubmit={this.addRecipe}>
+          <FormGroup controlId="recipeName">  
+            <InputGroup>
+              <InputGroup.Addon>Recipe</InputGroup.Addon>
+              <FormControl 
+                inputRef = {(input) => this.recipeName = input}
+                type = "text"
+                name = "recipeName"
+                placeholder = "Enter recipe name" 
+                autoFocus
+                onChange={this.handleSubmitBtn}
+              />       
+            </InputGroup>
+          </FormGroup>
+          <FormGroup controlId="ingredients">
+            <InputGroup>
+              <InputGroup.Addon>Ingredients</InputGroup.Addon>
               <FormControl
-                inputRef={(input) => this.instructions = input}
-                componentClass="textarea"
+                inputRef={(input) => this.ingredients = input}
                 type="text"
-                name="instructions"
-                placeholder = "Separate steps with a dot '.'"
+                name="ingredients"
+                placeholder="Enter ingredients (comma separated)"
               />
-            </FormGroup>
-            <div>
-              <Button bsStyle="success" onClick={this.addRecipe} disabled={this.state.submitBtnDisabled}><Glyphicon glyph="ok" /> Save</Button>
-              <Button bsStyle="danger" onClick={this.props.handleCloseModal}><Glyphicon glyph="remove" /> Cancel</Button>
-            </div>
-          </Form>
-        </Modal.Body>
+            </InputGroup>
+          </FormGroup>
+          <FormGroup controlId="prepTime">
+            <InputGroup>
+              <InputGroup.Addon>Preparation</InputGroup.Addon>
+              <FormControl
+                inputRef={(input) => this.prepTime = input}
+                type="text"
+                name="prepTime"
+                placeholder="Enter time in min"
+              />
+            </InputGroup>
+          </FormGroup>
+          <FormGroup
+            controlId="instructions"
+          >
+            <ControlLabel>Instructions</ControlLabel>{' '}
+            <FormControl
+              inputRef={(input) => this.instructions = input}
+              componentClass="textarea"
+              type="text"
+              name="instructions"
+              placeholder = "Separate steps with a dot '.'"
+            />
+          </FormGroup>
+          <div>
+            <Button bsStyle="success" onClick={this.addRecipe} disabled={this.state.submitBtnDisabled}><Glyphicon glyph="ok" /> Save</Button>
+            <Button bsStyle="danger" onClick={this.props.handleCloseModal}><Glyphicon glyph="remove" /> Cancel</Button>
+          </div>
+        </Form>
       </Modal>
     );
   };
@@ -347,9 +339,8 @@ class EditRecipeForm extends React.Component {
       <div>
         <Modal
           show = {this.props.showModal}
-          className="modal"
         >
-          <form onSubmit={this.updateRecipe}>
+          <Form onSubmit={this.updateRecipe}>
             <FormGroup controlId="prepTime">
               <InputGroup>
                 <InputGroup.Addon>Preparation</InputGroup.Addon>
@@ -383,7 +374,7 @@ class EditRecipeForm extends React.Component {
             </FormGroup>
             <Button bsStyle="success" type="submit"><Glyphicon glyph="ok"/> Save</Button>
             <Button bsStyle="danger" onClick={this.props.handleCloseModal}><Glyphicon glyph="remove"/> Cancel</Button>
-          </form>     
+          </Form>     
         </Modal> 
       </div>
     );
