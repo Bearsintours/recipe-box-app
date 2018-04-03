@@ -250,6 +250,7 @@ class AddRecipeForm extends React.Component {
     return (
       <Modal
         show={this.props.showModal} 
+        animation={true}
       > 
         <Form onSubmit={this.addRecipe}>
           <FormGroup controlId="recipeName">  
