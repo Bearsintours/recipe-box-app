@@ -21,6 +21,7 @@ class Recipes extends React.Component {
     state = {
         showAddModal: false,
         showEditModal: false,
+        filter: '',
         recipes: [
             {
                 recipeName: 'Croque-Monsieur',
@@ -128,13 +129,25 @@ class Recipes extends React.Component {
         this.setState({ recipes });
     }
 
+    handleChange = (e) => {
+        const filter = e.target.value;
+        this.setState({ filter })
+    }
+
     render() {
+        const allRecipes = this.state.recipes;
+        const filter = this.state.filter.trim();
+        const filteredRecipes = allRecipes.filter((recipe) => {
+            return recipe.ingredients.join('').toLowerCase().includes(filter.toLowerCase()) 
+                || recipe.recipeName.toLowerCase().includes(filter.toLowerCase()) ;
+        })
+        const recipes = filter.length > 0 ? filteredRecipes : allRecipes;
         return (
             <div className="recipes">
                 <div>
                     <PanelGroup accordion id="accordion-recipe">
                         {
-                            this.state.recipes.map((recipe) => {
+                            recipes.map((recipe) => {
                                 return (
                                     <Panel bsStyle="warning" eventKey={recipe.recipeName} key={recipe.recipeName}>
                                         <Panel.Heading>
@@ -167,6 +180,15 @@ class Recipes extends React.Component {
                 </div>
                 <div>
                     <Button className="addBtn" bsStyle="warning" bsSize="large" onClick={this.handleOpenAddModal}><Glyphicon glyph="plus" /> new recipe</Button>
+                    <form>
+                        <FormControl
+                            type="text"
+                            value={this.state.filter}
+                            placeholder="Search ingredient or recipe"
+                            onChange={this.handleChange}
+                        />
+                    </form>
+                    
                 </div>
                 <AddRecipeForm
                     showModal={this.state.showAddModal}
