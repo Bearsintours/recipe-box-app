@@ -143,7 +143,19 @@ class Recipes extends React.Component {
         })
         const recipes = filter.length > 0 ? filteredRecipes : allRecipes;
         return (
-            <div className="recipes">
+            <div className="recipes">   
+                <form>
+                    <FormGroup>
+                        <FormControl 
+                            className="search-bar"
+                            bsSize="lg"
+                            type="text"
+                            value={this.state.filter}
+                            placeholder='Search'
+                            onChange={this.handleChange}
+                        />
+                    </FormGroup>
+                </form>   
                 <div>
                     <PanelGroup accordion id="accordion-recipe">
                         {
@@ -179,16 +191,7 @@ class Recipes extends React.Component {
                     </PanelGroup>
                 </div>
                 <div>
-                    <Button className="addBtn" bsStyle="warning" bsSize="large" onClick={this.handleOpenAddModal}><Glyphicon glyph="plus" /> new recipe</Button>
-                    <form>
-                        <FormControl
-                            type="text"
-                            value={this.state.filter}
-                            placeholder="Search ingredient or recipe"
-                            onChange={this.handleChange}
-                        />
-                    </form>
-                    
+                    <Button className="addBtn" bsStyle="warning" bsSize="large" onClick={this.handleOpenAddModal}><Glyphicon glyph="plus" /> new recipe</Button>   
                 </div>
                 <AddRecipeForm
                     showModal={this.state.showAddModal}
