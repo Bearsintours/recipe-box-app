@@ -1,7 +1,7 @@
 ## Recipe Box App
 
-### An app to create, save and edit your favourites recipes.
+### An app to save and edit your favourite recipes.
 
-Built with React JS, React-bootstrap and LocalStorage API
+Built with React JS, React-bootstrap and LocalStorage API.
 
 #### Live version: https://bearsintours-recipe-box-app.herokuapp.com/
